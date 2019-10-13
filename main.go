@@ -28,38 +28,36 @@ func randInterval(start, end int) int{
 
 
 func main() {
-	var sum, a, b int
+	//var sum, a, b int
+	var mas [1000]int
+	check_flag:= false
 	flag.Parse()
 	if *start > *end {
 		fmt.Println("Ошибка, start > end")
 	} else {
 		if *norepeat {
-			if *end - *start < *n {
+			if *end-*start < *n {
 				fmt.Println("Невозможно вывести N чисел от L до R без повторений.")
 			} else {
-				a = randInterval(*start, *end)
-				sum += a
-				fmt.Print(a, " ")
-				b = a
+				mas[0] = randInterval(*start, *end)
 				for i := 1; i < *n; i++ {
-					a = randInterval(*start, *end)
-					sum += a
-					sum %= a
-					if b != 0 && b != a {
-						fmt.Print(a, " ")
-						sum += b
-					} else {
-						i--
-					}
-					/*
-						if sum % a != 0 && sum != b{
-							fmt.Println(a, b, sum, sum % a, sum % b)
+					mas[i] = randInterval(*start, *end)
+					for check_flag!= true {
+						check_flag= true
+						for j := 0; j < i; j++ {
+							if mas[i] == mas[j] {
+								check_flag= false
+							}
+						}
+						if !check_flag{
+							mas[i] = randInterval(*start, *end)
 						} else {
-							i--
-							sum -= a
-							fmt.Println(i, a, b, sum)
-						}*/
-					b = a
+							check_flag= true
+						}
+					}
+				}
+				for i := 0; i < *n; i++ {
+					fmt.Print(mas[i], " ")
 				}
 			}
 		} else {
